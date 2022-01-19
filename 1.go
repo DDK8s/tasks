@@ -9,6 +9,7 @@ import (
 
 func main() {
 	var notUnique bool
+
 	fmt.Printf("Enter a word: ")
 	sc := bufio.NewScanner(os.Stdin)
 	sc.Scan()
@@ -17,26 +18,24 @@ func main() {
 	letters := strings.Split(word, "")
 	fmt.Println(letters)
 
-	for i, v := range letters {//берём первое значение, которое будем сравнивать
-		for d, s := range letters {//берём второе значение, которое будем сравнивать
-			if v == s {
-				if i != d {//чтобы не сравнивать с самим собой
-					fmt.Println("Coincidence " + v + " и " + s)
+	for d, v := range letters {
+		for i := 1; i < len(letters); i++ {
+			if d != i{
+				if v == letters[i] {
+
+					fmt.Println("Coincidence " + v + " и " + letters[i])
 					notUnique = true
 					break
-				}
-			} else {
-				fmt.Println("Not a coincidence " + v + " и " + s)
+
+				} else {fmt.Println("Not a coincidence " + v + " и " + letters[i])}//можно ли оставлять так для компактности?
 			}
 		}
 		if notUnique {
-			break
+			fmt.Println("There are no unique word")
+			return
 		}
 	}
+	fmt.Println("There are unique word")
+	return
 
-	if notUnique {
-		fmt.Println("There are no unique word")
-	} else {
-		fmt.Println("There are unique word")
-	}
 }
