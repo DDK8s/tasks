@@ -4,14 +4,15 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
 func main() {
-	//var newLetters []string
+
 	var newLetters string
 	var k int = 1
-
+	fmt.Println("Enter a word: ")
 	sc := bufio.NewScanner(os.Stdin)
 	sc.Scan()
 	word := sc.Text()
@@ -26,12 +27,10 @@ func main() {
 		} else if letters[i] == letters[i+1] {
 			k++
 		}else {
-			//fmt.Print(letters[i], k)
-			s := string(k)
+			s := strconv.Itoa(k)
 			newLetters += letters[i] + s
 			k=1
 		}
-
 	}
 
 	if len(newLetters) < len(letters) {
@@ -41,9 +40,5 @@ func main() {
 			fmt.Print(v)
 		}
 	}
-	
-/*почему-то выводит спец. символы в консоль вместо чисел в L38.
-чтобы понять правильный ли вывод, закомменитить L37-43, разкомментить L29
- */
 
 }
