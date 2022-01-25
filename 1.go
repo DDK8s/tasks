@@ -1,42 +1,63 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
+	"math/rand"
+
+	"time"
 )
 
+func getRandomNumber(a, b int) int{
+	rand.Seed(time.Now().UnixNano())
+	time.Sleep(10 * time.Millisecond)
+	// a ≤ n ≤ b
+	n := a + rand.Intn(b-a+1)
+	return n
+}
+
+func matrixOutput(sample [4][4]int){
+	for _, v := range sample {
+		fmt.Println(v)
+	}
+}
+
+func createRandomMatrix() [4][4]int{
+
+	sample := [4][4]int{}
+
+
+	for i, _ := range sample {
+		for d, _ := range sample{
+			sample[i][d] = getRandomNumber(0, 9)
+		}
+	}
+	return sample
+}
+
 func main() {
-	var notUnique bool
-	fmt.Printf("Enter a word: ")
-	sc := bufio.NewScanner(os.Stdin)
-	sc.Scan()
-	word := sc.Text()
+	fmt.Println("Starting matrix:")
+	sample := createRandomMatrix()
+	matrixOutput(sample)
+	
+	n := len(sample)
+	for i := 0; i < n / 2; i++ {
+		for j := i; j < n - i - 1; j++ {
 
-	letters := strings.Split(word, "")
-	fmt.Println(letters)
+			y := sample[i][j]
 
-	for i, v := range letters {//берём первое значение, которое будем сравнивать
-		for d, s := range letters {//берём второе значение, которое будем сравнивать
-			if v == s {
-				if i != d {//чтобы не сравнивать с самим собой
-					fmt.Println("Coincidence " + v + " и " + s)
-					notUnique = true
-					break
-				}
-			} else {
-				fmt.Println("Not a coincidence " + v + " и " + s)
-			}
-		}
-		if notUnique {
-			break
+			sample[i][j] = sample[n-1-j][i]
+
+			sample[n - 1 - j][i] = sample[n - 1 - i][n - 1 - j]
+
+			sample[n - 1 - i][n - 1 - j] = sample[j][n - 1 - i]
+
+			sample[j][n - 1 - i] = y
+
 		}
 	}
 
-	if notUnique {
-		fmt.Println("There are no unique word")
-	} else {
-		fmt.Println("There are unique word")
-	}
+
+	fmt.Print("\nResult:\n")
+	matrixOutput(sample)
+
 }
