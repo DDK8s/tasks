@@ -1,42 +1,79 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
 )
 
-func main() {
-	var notUnique bool
-	fmt.Printf("Enter a word: ")
-	sc := bufio.NewScanner(os.Stdin)
-	sc.Scan()
-	word := sc.Text()
+type elem struct {
+	name string
+	next *elem
+}
 
-	letters := strings.Split(word, "")
-	fmt.Println(letters)
+type sinList struct {
+	len  int
+	head *elem
+}
 
-	for i, v := range letters {//берём первое значение, которое будем сравнивать
-		for d, s := range letters {//берём второе значение, которое будем сравнивать
-			if v == s {
-				if i != d {//чтобы не сравнивать с самим собой
-					fmt.Println("Coincidence " + v + " и " + s)
-					notUnique = true
-					break
-				}
-			} else {
-				fmt.Println("Not a coincidence " + v + " и " + s)
-			}
-		}
-		if notUnique {
-			break
-		}
+func initList() *sinList {
+	return &sinList{}
+}
+
+func (s *sinList) AddBack(name string) string{
+	elem := &elem{
+		name: name,
 	}
-
-	if notUnique {
-		fmt.Println("There are no unique word")
+	if s.head == nil {
+		s.head = elem
 	} else {
-		fmt.Println("There are unique word")
+		current := s.head
+		for current.next != nil {
+			current = current.next
+		}
+		current.next = elem
 	}
+	s.len++
+	return name
+}
+
+func (s *sinList) showList() error {
+	if s.head == nil {
+		return fmt.Errorf("List is empty")
+	}
+	current := s.head
+	for current != nil {
+		fmt.Println(current.name)
+		current = current.next
+	}
+
+	return nil
+}
+
+func (s *sinList) asd() error {
+	if s.head == nil {
+		return fmt.Errorf("List is empty")
+	}
+	current := s.head
+	for current != nil {
+		fmt.Println(current.name)
+		current = current.next
+	}
+	return nil
+}
+
+
+func main() {
+	sinList := initList()
+
+	sinList.AddBack("A")
+	sinList.AddBack("B")
+	sinList.AddBack("C")
+	sinList.AddBack("D")
+	sinList.AddBack("E")
+	
+	err := sinList.showList()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+
 }
