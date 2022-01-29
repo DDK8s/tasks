@@ -9,16 +9,16 @@ type elem struct {
 	next *elem
 }
 
-type sinList struct {
+type singleList struct {
 	len  int
 	head *elem
 }
 
-func initList() *sinList {
-	return &sinList{}
+func initList() *singleList {
+	return &singleList{}
 }
 
-func (s *sinList) AddBack(name string) string{
+func (s *singleList) AddBack(name string) *elem{
 	elem := &elem{
 		name: name,
 	}
@@ -32,12 +32,12 @@ func (s *sinList) AddBack(name string) string{
 		current.next = elem
 	}
 	s.len++
-	return name
+	return elem
 }
 
-func (s *sinList) showList() error {
+func (s *singleList) showList() error {
 	if s.head == nil {
-		return fmt.Errorf("List is empty")
+		return fmt.Errorf("list is empty")
 	}
 	current := s.head
 	for current != nil {
@@ -45,35 +45,50 @@ func (s *sinList) showList() error {
 		current = current.next
 	}
 
-	return nil
-}
-
-func (s *sinList) asd() error {
-	if s.head == nil {
-		return fmt.Errorf("List is empty")
-	}
-	current := s.head
-	for current != nil {
-		fmt.Println(current.name)
-		current = current.next
-	}
 	return nil
 }
 
 
 func main() {
-	sinList := initList()
+	singleList := initList()
 
-	sinList.AddBack("A")
-	sinList.AddBack("B")
-	sinList.AddBack("C")
-	sinList.AddBack("D")
-	sinList.AddBack("E")
-	
-	err := sinList.showList()
+	singleList.AddBack("A")
+	singleList.AddBack("B")
+	singleList.AddBack("C")
+	singleList.AddBack("D")
+	singleList.AddBack("E")
+
+
+	fast := singleList.head
+	slow := singleList.head
+
+	for fast != nil || singleList.head.next != nil {
+		slow = slow.next
+		fast = singleList.head.next.next
+		//Если коллизия найдена.
+		if slow == fast {
+			break
+		}
+	}
+
+	if fast == nil || fast.next == nil {
+		fmt.Println("No loop.")
+		return
+	}
+
+
+	slow = singleList.head
+	for slow != fast {
+		slow = slow.next
+		fast = singleList.head.next
+	}
+
+	fmt.Println("Loop starting point is ", fast.name)
+
+	/*err := singleList.showList()
 	if err != nil {
 		fmt.Println(err.Error())
-	}
+	}*/
 
 
 }
