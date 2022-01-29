@@ -58,13 +58,12 @@ func main() {
 	singleList.AddBack("D")
 	singleList.AddBack("E")
 
-
 	fast := singleList.head
 	slow := singleList.head
 
-	for fast != nil || singleList.head.next != nil {
+	for fast != nil && fast.next != nil {
 		slow = slow.next
-		fast = singleList.head.next.next
+		fast = fast.next.next
 		//Если коллизия найдена.
 		if slow == fast {
 			break
@@ -82,13 +81,12 @@ func main() {
 		slow = slow.next
 		fast = singleList.head.next
 	}
-
 	fmt.Println("Loop starting point is ", fast.name)
 
+	//Вывести весь список.
 	/*err := singleList.showList()
 	if err != nil {
 		fmt.Println(err.Error())
 	}*/
-
 
 }
